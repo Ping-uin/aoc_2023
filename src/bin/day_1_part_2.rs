@@ -17,18 +17,7 @@ fn read_lines(filename: &str) -> Vec<String> {
 }
 
 fn rewrite_lines(line: &str) -> String {
-    let mut filtered_line = line.to_string();
     let numbers: HashMap<String, &str> = HashMap::from([
-        // ("zerone".to_string(), "1"),
-        // ("oneight".to_string(), "8"),
-        // ("twone".to_string(), "1"),
-        // ("threeight".to_string(), "8"),
-        // ("fiveight".to_string(), "8"),
-        // ("sevenine".to_string(), "9"),
-        // ("eightwo".to_string(), "2"),
-        // ("eighthree".to_string(), "3"),
-        // ("nineight".to_string(), "8"),
-        // ("zero".to_string(), "0"),
         ("one".to_string(), "1"),
         ("two".to_string(), "2"),
         ("three".to_string(), "3"),
@@ -39,12 +28,37 @@ fn rewrite_lines(line: &str) -> String {
         ("eight".to_string(), "8"),
         ("nine".to_string(), "9"),
     ]);
-    // let no_attachment: bool = false;s
-    for element in numbers.keys() {
-        if line.contains(element) {
-            filtered_line = filtered_line.replace(element, numbers.get(element).unwrap());
+    let mut filtered_line = "".to_string();
+    // used to keep track of current index and to form a substring
+    let mut i = 0;
+    // iterates over each character in a given line
+    for char in line.chars() {
+        // iterates over each keyword in hashmap, looking for the element in line
+        for element in numbers.keys() {
+            // creates a substring in the length of the element, starting at the current character
+            // if there is enough space for the element it results ok
+            let substr = match line.get(i..i + element.len()).ok_or("Out of bounds") {
+                Ok(str) => str,
+                _ => {
+                    continue;
+                }
+            };
+            // if the substring with the length of the element is the actual element push the corresponding number to the filtered line
+            if substr == element {
+                filtered_line.push_str(numbers.get(element).unwrap());
+            }
         }
+        filtered_line.push(char);
+        // println!("{}", filtered_line);
+        i += 1;
     }
+    // for element in numbers.keys() {
+    //     if line.contains(element) {
+    //         // here needs to be a check if the element is free or part of another element
+
+    //         filtered_line = filtered_line.replace(element, numbers.get(element).unwrap());
+    //     }
+    // }
     filtered_line
 }
 
