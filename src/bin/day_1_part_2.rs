@@ -5,7 +5,6 @@ pub fn main() {
     // println!("{:?}", content);
     let result = pick_numbers(content);
     println!("{:?}", result);
-    
 }
 
 fn read_lines(filename: &str) -> Vec<String> {
@@ -20,7 +19,16 @@ fn read_lines(filename: &str) -> Vec<String> {
 fn rewrite_lines(line: &str) -> String {
     let mut filtered_line = line.to_string();
     let numbers: HashMap<String, &str> = HashMap::from([
-        ("zero".to_string(), "0"),
+        // ("zerone".to_string(), "1"),
+        // ("oneight".to_string(), "8"),
+        // ("twone".to_string(), "1"),
+        // ("threeight".to_string(), "8"),
+        // ("fiveight".to_string(), "8"),
+        // ("sevenine".to_string(), "9"),
+        // ("eightwo".to_string(), "2"),
+        // ("eighthree".to_string(), "3"),
+        // ("nineight".to_string(), "8"),
+        // ("zero".to_string(), "0"),
         ("one".to_string(), "1"),
         ("two".to_string(), "2"),
         ("three".to_string(), "3"),
@@ -31,9 +39,9 @@ fn rewrite_lines(line: &str) -> String {
         ("eight".to_string(), "8"),
         ("nine".to_string(), "9"),
     ]);
-    let no_attachment: bool = false;
+    // let no_attachment: bool = false;s
     for element in numbers.keys() {
-        if line.contains(element) && no_attachment {
+        if line.contains(element) {
             filtered_line = filtered_line.replace(element, numbers.get(element).unwrap());
         }
     }
@@ -42,12 +50,12 @@ fn rewrite_lines(line: &str) -> String {
 
 fn pick_numbers(content: Vec<String>) -> u32 {
     let mut number: String;
-    let mut result:u32 = 0;
+    let mut result: u32 = 0;
     for line in content {
         let mut numbers_in_line: Vec<char> = Vec::new();
         for char in line.chars() {
             if char.is_numeric() {
-                numbers_in_line.push(char)
+                numbers_in_line.push(char);
             }
         }
         number = numbers_in_line.first().unwrap().to_string();
