@@ -1,9 +1,10 @@
 use std::fs::read_to_string;
 
 // Main method of the module
-pub fn run() {
+pub fn main() {
     let result = read_lines("src/inputs/day_1.txt");
     println!("{}", result);
+
 }
 
 // Iterates over the textfile line by line
