@@ -1,4 +1,5 @@
 use std::fs::read_to_string;
+use regex::{ Regex, Captures };
 
 const RED: i32 = 12;
 const GREEN: i32 = 13;
@@ -21,12 +22,13 @@ fn read_lines(filename: &str) -> Vec<String> {
 }
 
 fn evaluate_games(content: Vec<String>) {
-    let mut id = 0;
-    let possible = false;
+    let re = Regex::new(r"Game (\d+):").unwrap();
     for game in content {
-        let mut current_game = Vec::new();
-        current_game = game.split(";").collect();
-        // split each part at " " and add numbers
-        
+        if let Some(captures) = re.captures(&game) {
+            if let Some(id) = captures.get(1) {
+                let id = id.as_str().parse::<u32>().unwrap();
+                println!("ID: {}", id);
+            }
+        }
     }
 }
