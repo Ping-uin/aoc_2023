@@ -5,14 +5,15 @@ fn main() {
     // let content = read_lines("src/inputs/test_input.txt");
     let content = read_lines("src/inputs/day_3.txt");
     let plan = create_field_vec(content);
+    let mut result = 0;
     // Iterating over each row of characters
     for row in plan {
         // Iterating over each character in the row
         for char in row {
-            find_symbol(char);
+            if find_symbol(char) { result += find_value();}
         }
     }
-    // println!("{:?}", plan);
+    println!("{:?}", result);
 }
 
 fn read_lines(filename: &str) -> Vec<String> {
@@ -36,14 +37,15 @@ fn create_field_vec(content: Vec<String>) -> Vec<Vec<char>> {
     plan
 }
 
-fn find_value() {
-
+fn find_value() -> i32{
+    1
 }
 
 fn find_symbol(char: char) -> bool{
-    let found_sym = false;
+    let mut found_sym = false;
     if char != '.' {
-        println!("{}", char);
+        // println!("{}", char);
+        found_sym = true;
     }
     found_sym
 }
