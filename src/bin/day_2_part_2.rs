@@ -23,13 +23,11 @@ fn evaluate_games(content: Vec<String>) -> i32 {
     for game in content {
         let mut rgb = vec![0, 0, 0];
         let parts: Vec<&str> = game.split(":").collect();
-        // game_id = parts[0][5..].parse::<i32>().unwrap(); // Selects the game id as i32
         // Takes the second part, the rounds of a game, and matches contents via regex
         // Iterates over each match group with the format (number + color)
         for cap in re.captures_iter(parts[1]) {
             rgb = get_min_value(cap[1].to_string(), cap[2].to_string(), rgb);
         }
-        // Adds the game id to result if it's a valid game
         result += rgb[0]*rgb[1]*rgb[2];
     }
     result
