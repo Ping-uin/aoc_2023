@@ -1,6 +1,11 @@
 use std::fs::read_to_string;
 use std::collections::HashMap;
 
+// IDEAS
+// HashMap with ID and Counter
+// Recursive function per line going through all iterations
+// backwards solving? simply add known counters 
+
 fn main() {
     let content = read_lines("src/inputs/test_input.txt"); // Test Input result should be 30
     let mut curr_card = 0;
@@ -45,7 +50,7 @@ fn count_cards(mut cards: HashMap<i32, Vec<i32>>, curr_card: i32, mut result: i3
     result += 1;
     println!("Current Card:{:?}", curr_card);
     println!("Contains {:?}", cards[&curr_card]);
-    for card in cards[&curr_card] {
+    for card in cards[&curr_card.clone()] {
         result+= count_cards(cards.clone(), curr_card, result);
     }
     result
