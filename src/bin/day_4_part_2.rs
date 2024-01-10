@@ -1,26 +1,32 @@
 use std::fs::read_to_string;
 use std::collections::HashMap;
 
-// IDEAS
-// HashMap with ID and Counter
-// Recursive function per line going through all iterations
-// backwards solving? simply add known counters 
-
 fn main() {
     let content = read_lines("src/inputs/test_input.txt"); // Test Input result should be 30
     let mut curr_card = 0;
     let mut result = 0;
-    let mut scratch_cards: HashMap<i32, Vec<i32>> = HashMap::new();
+    let mut value = 0;
+    let mut card_values: Vec<i32> = Vec::new();
+    let mut card_counters: HashMap<i32, i32> = HashMap::new();
+    // fill the HashMap with all key/value pairs
     for line in content {
-        let mut additional_cards: Vec<i32> = Vec::new();
         curr_card += 1;
-        let range = evaluate_card(line);
-        for i in 1..=range {
-            additional_cards.push(curr_card + i);
-        }
-        scratch_cards.insert(curr_card, additional_cards);
-        result += count_cards(scratch_cards.clone(), curr_card, result);
+        value = evaluate_card(line);
+        // println!("------------------------");
+        // println!("current card: {:?}", curr_card);
+        // println!("current values: {:?}", value);
+        card_values.push(value);
+        card_counters.insert(curr_card, 1);
     }
+    // Iterate over the HashMap to add all additional cards
+    for elem in 1..=card_counters.len() {
+        for i in 0..*card_values.get(elem-1).unwrap() {
+            // println!("ELEMENT: {}", elem);
+            *card_counters.get_mut(&(elem as i32)).unwrap() += *card_values.get(elem-1).unwrap();
+        }
+        result += card_counters.get(&(elem as i32)).unwrap();
+    }
+
     println!("{:?}", result);
 }
 
@@ -32,6 +38,7 @@ fn read_lines(filename: &str) -> Vec<String> {
     content
 }
 
+// Evaluates a single card to determine how many correct numbers are on it
 fn evaluate_card(card: String) -> i32 {
     let card_content: Vec<&str> = card.split("|").collect();
     let winning_numbers: Vec<&str> = card_content[0].split(" ").collect();
@@ -42,16 +49,5 @@ fn evaluate_card(card: String) -> i32 {
             counter += 1;
         }
     }
-    // println!("Card: {}", counter);
     counter
-}
-
-fn count_cards(mut cards: HashMap<i32, Vec<i32>>, curr_card: i32, mut result: i32) -> i32 {
-    result += 1;
-    println!("Current Card:{:?}", curr_card);
-    println!("Contains {:?}", cards[&curr_card]);
-    for card in cards[&curr_card.clone()] {
-        result+= count_cards(cards.clone(), curr_card, result);
-    }
-    result
 }
