@@ -12,21 +12,36 @@ fn main() {
     for line in content {
         curr_card += 1;
         value = evaluate_card(line);
-        // println!("------------------------");
-        // println!("current card: {:?}", curr_card);
-        // println!("current values: {:?}", value);
         card_values.push(value);
         card_counters.insert(curr_card, 1);
     }
     // Iterate over the HashMap to add all additional cards
-    for elem in 1..=card_counters.len() {
-        for i in 0..*card_values.get(elem-1).unwrap() {
-            // println!("ELEMENT: {}", elem);
-            *card_counters.get_mut(&(elem as i32)).unwrap() += *card_values.get(elem-1).unwrap();
-        }
-        result += card_counters.get(&(elem as i32)).unwrap();
-    }
+    let mut elem= 1;
 
+    println!("ELEMENT AM ANFANG: {}", elem);
+    while elem <= card_counters.len() as i32 {
+        let mut redo: i32 = card_counters
+            .get(&(elem as i32))
+            .unwrap()
+            .to_owned();
+        println!("---------------");
+        println!("CURRENT CARD: {}", elem);
+        println!("CURRENT VALUE: {}", card_values.get((elem - 1) as usize).unwrap());
+        println!("CURRENT COUNTER: {}", card_counters.get(&(elem as i32)).unwrap());
+        if redo >= 1 {
+            // Select the next n cards and add 1 to their counter
+            for i in 1..=*card_values.get((elem - 1) as usize).unwrap() {
+                // println!("card in loop: {}", (elem as i32) + i);
+                *card_counters.get_mut(&((elem as i32) + i)).unwrap() += 1;
+            }
+            redo -= 1;
+        }
+        // println!("CURRENT COUNTER: {}", card_counters.get(&(elem as i32)).unwrap());
+        result += card_counters.get(&(elem as i32)).unwrap();
+        elem += 1;
+        println!("ELEMENT AM ENDE: {}", elem);
+    }
+    println!("+++++++++++++++");
     println!("{:?}", result);
 }
 
